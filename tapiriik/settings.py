@@ -180,7 +180,7 @@ SOFT_LAUNCH_SERVICES = []
 DISABLED_SERVICES = []
 
 # Services no longer available - will be removed across the site + excluded from sync.
-WITHDRAWN_SERVICES = ["endomondo"]
+WITHDRAWN_SERVICES = []
 
 # where to put per-user sync logs
 USER_SYNC_LOGS = "./"
