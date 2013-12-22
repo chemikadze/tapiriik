@@ -353,6 +353,11 @@ class Sync:
                     excludedServices.append(conn)
                     continue
 
+                if not exhaustive and svc.PartialSyncRequiresTrigger and "TriggerPartialSync" not in conn.__dict__:
+                    logger.info("Service %s has not been triggered" % conn.Service.ID)
+                    excludedServices.append(conn)
+                    continue
+
                 if svc.RequiresExtendedAuthorizationDetails:
                     if not hasattr(conn, "ExtendedAuthorization") or not conn.ExtendedAuthorization:
                         extAuthDetails = [x["ExtendedAuthorization"] for x in allExtendedAuthDetails if x["ID"] == conn._id]
@@ -568,7 +573,7 @@ class Sync:
             blockingSyncErrorsCount = 0
             syncExclusionCount = 0
             for conn in serviceConnections:
-                db.connections.update({"_id": conn._id}, {"$set": {"SyncErrors": tempSyncErrors[conn._id], "ExcludedActivities": tempSyncExclusions[conn._id]}})
+                db.connections.update({"_id": conn._id}, {"$set": {"SyncErrors": tempSyncErrors[conn._id], "ExcludedActivities": tempSyncExclusions[conn._id]}, "$unset": {"TriggerPartialSync": None}})
                 nonblockingSyncErrorsCount += len([x for x in tempSyncErrors[conn._id] if "Block" not in x or not x["Block"]])
                 blockingSyncErrorsCount += len([x for x in tempSyncErrors[conn._id] if "Block" in x and x["Block"]])
                 syncExclusionCount += len(tempSyncExclusions[conn._id].items())
