@@ -1,4 +1,4 @@
-requests==1.2.3
+requests==2.0.0
 pymongo
 pytz
 lxml
@@ -6,3 +6,4 @@ dropbox
 python-dateutil
 Django==1.5.1
 pycrypto
+requests_oauthlib==0.4.0
